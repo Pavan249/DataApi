@@ -1,0 +1,175 @@
+﻿@model DataApi.Core.Model.StudentData
+@{
+    Layout = null;
+}
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/a10c7f6efa.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="~/js/site.js"></script>
+  <style>
+        body {
+            font-family: arial;
+            font-size: 16px;
+            margin: 0px 383px 10px 341px;
+            color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            min-height: 100vh;
+        }
+
+        .input_container {
+            width: 600px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 25px rgba(0,0,0,0.3);
+            border: 10px solid #41B9FF;
+        }
+
+            .input_container .input-row {
+                margin-bottom: 12px;
+            }
+  </style> 
+</head>
+@using (Html.BeginForm("Create", "Home", FormMethod.Post, new { @id = "begin" }))
+{
+    <body>
+        <center>
+            <h1 class="input-row">REGISTRATION FORM</h1>
+            <div class="input_container">
+                <form>
+                    @Html.HiddenFor(model=>model.StudentId)
+                    <div class="input-row">
+                        <label>Name</label>
+                        @Html.TextBoxFor(model=>model.Name)                       
+                    </div>
+                    <br/>
+                    <div class="input-row">
+                        <label>Email</label>
+                        @Html.TextBoxFor(model=>model.Email)
+                    </div>
+                    <br />
+                    <div class="input-row">
+                        <label>Address</label>
+                        @Html.TextBoxFor(model=>model.Address)
+                </div>
+                    <br />
+                    <div class="input-row">
+                        <label>PhoneNum</label>
+                        @Html.TextBoxFor(model=>model.PhoneNum)
+                    </div>
+                    <div class="input-row">
+                        <label>Location</label>
+                        @Html.DropDownList("LocationId", new SelectList(ViewBag.Location, "LocationId", "Location"), "Select Location")
+                    </div>
+                    <br />
+                    <div class="input-row">
+                        <label>Password</label>
+                        @Html.PasswordFor(model=>model.Password, new{id="myInput"})
+                       <br/>
+                        <input type="checkbox" onclick="myFunction()">Show password
+                    </div>
+                    <br />
+                    <div class="input-row">
+                        <label>ReTypePassword</label>
+                        @Html.PasswordFor(model=>model.ReTypePassword)
+                    </div>
+                    <br />
+                    <div class="text-center">
+                        <input type="submit" value="Submit" onclick="Submit">
+                    </div>
+                    <br/>
+                    
+                </form>
+            </div>
+            <p>
+                <input type="button" value="To Read" onclick="location.href='@Url.Action("Read", "Home")'" />
+            </p>
+        </center>        
+    </body>
+}
+<script>
+    $().ready(function () {
+        $("#begin").validate({
+            rules:
+            {
+                Name:
+                {
+                    required: true,
+                    lettersonly: true,
+                },
+                Email:
+                {
+                    required: true,
+                },
+                Address:
+                {
+                    required: true,
+                },
+                PhoneNum:
+                {
+                    required: true,
+                    number: true,
+                    maxlength: 13,
+                },                              
+                Password:
+                {
+                    required: true,
+                },
+                RetypePassword:
+                {
+                    required: true,
+                    equalTo: "#password"
+                }
+            },
+            messages:
+            {
+                Name:
+                {
+                    required: " Please enter a FirstName",
+                    lettersonly: "Only alphabets are valid"
+                },
+                Email:
+                {
+                    required: " Please enter a EmailId",
+                },
+                Address:
+                {
+                    required: " Please enter a Address",
+                },
+                PhoneNum:
+                {
+                    required: " Please enter a Phone Number",
+                    maxlength: " Your number must not exceed 13 characters",
+                },          
+                Password:
+                {
+                    required: " Please enter a password",
+                },
+                RetypePassword:
+                {
+                    required: " Please enter a password again",
+                    equalTo: " Please enter the same password as entered above"
+                }
+            }
+        });
+    });
+    function Submit() {
+        if ($("#begin").validate()) {
+            $("#begin").submit();
+        }
+    }
+    function myFunction() {
+        var x = document.getElementById("myInput");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
+</script>

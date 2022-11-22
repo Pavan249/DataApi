@@ -1,0 +1,137 @@
+﻿@model IEnumerable<DataApi.Core.Model.StudentData>
+@{
+    Layout = null;
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://kit.fontawesome.com/a10c7f6efa.js" crossorigin="anonymous"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<style>
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 0px;
+    }
+
+    #customers {
+        font-family: Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+        #customers td, #customers th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+</style>
+
+@using (Html.BeginForm("Search", "Home", FormMethod.Get))
+{  
+    @Html.TextBox("Search" )
+        <input type="submit" name="search" value="Search" />
+    <a asp-action="Search"></a>    
+}
+<table id="customers" class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(x => x.StudentId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(x => x.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(x => x.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(x => x.Address)
+        </th>
+        <th>
+            @Html.DisplayNameFor(x => x.PhoneNum)
+        </th>
+        <th>
+            @Html.DisplayNameFor(x => x.Location)
+        </th>
+        <th>
+            @Html.DisplayNameFor(x => x.Password)
+        </th>
+        <th>
+            @Html.DisplayNameFor(x => x.ReTypePassword)
+        </th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.StudentId
+            </td>
+
+            <td>
+                @item.Name
+            </td>
+            <td>
+                @item.Email
+            </td>
+            <td>
+                @item.Address
+            </td>
+            <td>
+                @item.PhoneNum
+            </td>
+            <td>
+                @item.Location
+            </td>
+            <td>
+                @item.Password
+            </td>
+            <td>
+                @item.ReTypePassword
+            </td>
+            
+            <td>
+                @Html.ActionLink("","Update","Home", new{studentid =item.StudentId},new{@class="fa-solid fa-pen-to-square",title="Update"})
+            </td>
+
+            <td>
+                <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Are you sure want to delete this record?')">
+                    @Html.ActionLink("", "Delete", new {studentid =item.StudentId},new{@class="fa fa-trash" ,title="Delete"})
+                </button>
+            <td>
+                <button style="background:white;border:none" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="partial('@item.StudentId')">
+                    <i class="fa-solid fa-eye text-info" ,title="Detail"></i>
+                </button>
+                <div class="modal fade" id="myModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="staticBackdropLabel">Details</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body" id="mybody">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+
+        </tr>
+    }
+    <p>
+        @Html.ActionLink("Create","Create","Home")
+    </p>
+</table>
+<script>
+    function partial(id) {
+        $("#myModal").css('display', 'block');
+        $("#mybody").load("/Home/Detail?studentid=" + id);
+        $("#myModal").modal("show");
+    }
+</script>
